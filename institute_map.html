@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SICIP Training Institutes in Bangladesh</title>
+    <!-- Leaflet CSS for map styling -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <!-- Leaflet JavaScript for map functionality -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        /* Set a fixed height for the map container */
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+        .info-panel {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Map of SICIP Training Institutes in Bangladesh</h1>
+    <p>Click on a marker for more details about the institute.</p>
+    
+    <!-- Container for the map -->
+    <div id="map"></div>
+
+    <script>
+        // Initialize the map
+        // Set the view to the center of Bangladesh (approx. 23.6850° N, 90.3563° E) with a zoom level
+        var map = L.map('map').setView([23.6850, 90.3563], 7);
+
+        // Add a tile layer (the base map) from OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // --- Add a GeoJSON layer for Bangladesh's boundary (optional but highly recommended) ---
+        // This URL points to a simplified GeoJSON of Bangladesh's administrative boundary.
+        // You can find more detailed GeoJSON files online.
+        var geojsonUrl = 'https://raw.githubusercontent.com/fahomid/Interactive-map-of-Bangladesh-using-JavaScript/master/geoBoundaries-BGD-ADM0_simplified.geojson';
+
+        // Fetch the GeoJSON data and add it to the map
+        fetch(geojsonUrl)
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    style: {
+                        color: "blue",       // Border color
+                        weight: 2,            // Border thickness
+                        fillColor: "#f0f0f0", // Light grey fill
+                        fillOpacity: 0.2
+                    }
+                }).addTo(map);
+            })
+            .catch(error => {
+                console.log("Error loading the GeoJSON boundary file. Using map without a boundary outline.", error);
+                // You could optionally add a fallback rectangle or just continue without the boundary.
+            });
+
+        // --- Define markers for SICIP Training Institutes ---
+        // This is a list of example locations. You MUST replace the coordinates with the actual addresses of the institutes.
+        // You can find latitude and longitude by right-clicking a location on Google Maps.
+
+        var institutes = [
+            {
+                name: "A.B.C Bangladesh-Turkish Technical School",
+                coords: [22.65595817157872, 91.80101771047931], 
+                address: "Nazirhat Municipality ,Fatickchari, Chattogram,Bangladesh",
+                details: "AEOSIB"
+            },
+            {
+                name: "ACA Technical Institute",
+                coords: [23.386365405573148, 90.693060475933],
+                address: "Faterpur, Enayetnagar, Matlab Uttor, Chandpur,Chattogram, Bangladesh",
+                details: "AEOSIB"
+            },
+            {
+                name: "Ananda Shipyard & Slipways Limited",
+                coords: [23.60937984198316, 90.60665983550619], 
+                address: "Shipyard: Meghnaghat, Sonargaon, Narayangonj. Corporate Office: House #20, Road #9/B, Nikuja-1, Khilkhet, Dhaka",
+                details: "AEOSIB"
+            },
+            {
+                name: "Asia Technical Training Center",
+                coords: [23.79894097020508, 90.35440081819007], 
+                address: "149/9- C, Shah Alibagh, Mirpur-1, Dhaka-1216, Bangladesh",
+                details: "AEOSIB"
+            },
+            {
+                name: "Banshkhali Polytechnic Institute",
+                coords: [22.07140240861278, 91.94344760167992], 
+                address: "Boilchari, Banshkhal",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Desh Ship Building & Engineering Limited",
+                coords: [22.32752674258432, 91.81255379530343], 
+                address: "Akhtaruzzaman Centre (7th Floor), 21/22 Agrabad C/A, Chittagong-4100, Bangladesh",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Dockyard & Engineering Works Technical Training Center, Narayanganj",
+                coords: [23.605696966917147, 90.50912074566789], 
+                address: "Sonakanda, Bandar, Narayanganj-1413",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Eco Social Development Organization-ESDO, Cox's Bazar",
+                coords: [21.610537410515203, 91.97239512563584], 
+                address: "Cox's Bazar, Bangladesh",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Eco Social Development Organization-ESDO, Thakurgaon",
+                coords: [26.29095255987306, 88.43719463338081], 
+                address: "Gabindanagar, Thakurgaon",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "KARUPANYA TECHNICAL TRAINING CENTER",
+                coords: [26.031567026604012, 88.46298549810784], 
+                address: "Shaheed Mohammad Ali Road, Thakurgaon",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Khulna Shipyard Techncial Training Center",
+                coords: [22.78870410491847, 89.58108583577099], 
+                address: "Khulna Shipyard Ltd, Labanchara, Khulna",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "National Institute of Engineering & Technology ",
+                coords: [23.740981402106023, 90.52545543664586], 
+                address: "Rupshi, Rupgonj, Narayanganj",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Risda Institute of Technology",
+                coords: [23.854922489931994, 90.30689771707765], 
+                address: "26/2, Block-C, Kaliakoir, Birulia, Savar,Dhaka",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "UCEP Barishal TVET Institute, Barisal",
+                coords: [22.72384704576899, 90.34078344157656], 
+                address: "UCEP Barisal Region, Kahipur, Barisal",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Underprivileged Children's Educational Programs",
+                coords: [22.39860165521431, 91.87829224687678], 
+                address: "UCEP Chittagong North Region Wasa Road, Mohra, Kalurghat Chittagong",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Western Marine Shipyard Limited",
+                coords: [22.327800242136558, 91.87136047996091], 
+                address: "Amin Future Park (7th floor), 1440/A Strand Road, Chittagong, Bangladesh",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Engineer's Institute of Technology, Saidpur",
+                coords: [25.81976087764113, 88.87684227104988], 
+                address: "Saidpur, Nilphamari",
+                details: "AEOSIB"
+            }
+            ,
+            {
+                name: "Al-Islam Technical & Educational Institute ",
+                coords: [23.878578857284868, 90.2946526223354], 
+                address: "Anarkali,Aukpara,Savar,Dhaka",
+                details: "BACI"
+            }
+            ,
+            {
+                name: "Bandhu Technical Training Center(BTTC)",
+                coords: [24.37803330566239, 88.83913537539078], 
+                address: "Union Council Road, Puthia, Rajshahi, Puthia, Rajshahi",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Bashundhara Training & Testing Center (BTTC)",
+                coords: [23.74862887507926, 90.46590120164987], 
+                address: "Sheikher Jayga, Dasher Kandi, Khilgaon, Dhaka-1219",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Begum Showket Ara Polytechnic Institute(BSAPI)",
+                coords: [23.039889336092546, 91.52057631084027], 
+                address: "South Haripur, Pathan Nagar, Chhagalnaiya, Feni",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Burichang Model Polytechnic Institute(BMPI)",
+                coords: [23.550767177194746, 91.12729943766797], 
+                address: "Burichang, Cumilla",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Compact Institute of Skills Development (CISD)",
+                coords: [23.596591077701362, 88.92495049534064], 
+                address: "Sarojgonj, Chuadanga",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Digital Technical Training Center, Gabtali, Bogura",
+                coords: [24.87201235609914, 89.3526074132857], 
+                address: "Gabtali, Bogura",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "DIGITAL COMPUTER TRAINING CENTER, PABNA",
+                coords: [24.00952118859566, 89.26675111069581], 
+                address: "Pabna",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Dinajpur Institute of Skill Development(DISD)",
+                coords: [25.62803763136902, 88.62305445122664], 
+                address: "aluadanga (Ondho Hafez More), Sadar, Dinajpur",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Dolphin Training Center(DTC)",
+                coords: [23.936705918644186, 90.30898417779831], 
+                address: "Banglabazar, Norshinghopur, Ashulia, Savar, Dhaka",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Eco Institute of Technology (EIT)",
+                coords: [26.039567224618075, 88.45462361501217], 
+                address: "College Para,Thakurgaon",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "IDA- Technical Training Institute(IDA-TTI)",
+                coords: [25.188880150401086, 89.0177619398813], 
+                address: "Panchbibi, Joypurhat",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Image Vocational Training Institute(IVTI)",
+                coords: [25.728294531027064, 89.25484203773682], 
+                address: "Khamar Mor, College Road, Rangpur-5402",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Jano Unnayan Technical Training Institute(JUTTI)",
+                coords: [22.674788113060455, 90.58268213315131], 
+                address: "Bankerhat Bazar, Bhola Sadar, Bhola",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Lohagara Science And Technology Institute",
+                coords: [23.191672341165102, 89.65969736416646], 
+                address: "Ala Munsir Mor, Lohagara, Narail",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "National Institute of Technology(NIT)",
+                coords: [22.417476725009717, 91.84166944625292], 
+                address: "224/329, CDA Avenue, Muradpur, Chittagong",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "RISDA Institute of Technology (RIT)",
+                coords: [23.854483013024332, 90.30729672603361], 
+                address: "26/2 kaliakoir,Birulia,Savar,Dhaka",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "SAIC Institute of Management and Technology (SIMT)",
+                coords: [24.88937762821177, 89.36700942421649], 
+                address: "Matidali Biman mor, 2nd Bypass, Bogura Sadar, Bogura",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Skill Development Institute (SDI)",
+                coords: [23.882163058867775, 90.35426317421134], 
+                address: "Plot- 2, Road- 1, Block- I, Rajuk Uttara 3rd Phase, Sector- 16, Uttara, Dhaka- 1230",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Skus Technical Training Centre(STTC)",
+                coords: [21.421354394450585, 91.98723063157296], 
+                address: "Bijoy nagar Abashik, Dolphin Moor, Kolatoli, Cox's Bazar",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Smart Skill Training Center(STC)",
+                coords: [22.77368410240316, 89.71189378555151], 
+                address: "Fakirhat Upzalla Road, Fakirhat, Bagerhat-9370",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Sundarban Institute of Technology (SIT)",
+                coords: [22.839012626710836, 89.53170511791467], 
+                address: "161-KDA Jalil Sarani, Khulna GPO-9000, Boyra, Khulna",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Trust Technical Training Institute (TTTI)",
+                coords: [23.905255039234998, 90.27965111848475], 
+                address: "Bishmail, Zerabo Road,Sanwalia, Savar Cantonment, Savar, Dhaka, 1344",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "Universal Institute of Business & Technology (UIBT)",
+                coords: [23.891429078543407, 90.26057256077394], 
+                address: "Kathal Bagan, Islamnagar Bazar, Senwalia, Ashulia Savar, Dhaka-1344",
+               details: "BACI"
+            }
+            ,
+            {
+                name: "A. K. Khan UCEP Technical School",
+                coords: [22.398202073431076, 91.87716558630724], 
+                address: "Wasa Road, Mohora, Kalirghat, Chattogram",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "BEIOA - Light Engineering Training Institute: Center- 3",
+                coords: [23.718698734129685, 90.41899009337634], 
+                address: "152, Distilary Road (Kather Pul), Gendaria, Dhaka",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "BEIOA - Light Engineering Training Institute: Center- 2",
+                coords: [23.62666239145462, 90.47787291334708], 
+                address: "Sab'A Masjid Goli, Mamudpur, Bhuigar, Fatullah, Narayongonj",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "BEIOA - Light Engineering Training Institute: Center- 1",
+                coords: [23.72009399347067, 90.41929426076555], 
+                address: "Paradise Bhabon, 2 Folder street, Wari, Dhaka",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "BRAC Institute of Skills Development",
+                coords: [23.851746891860344, 90.41236664932072], 
+                address: "Ashkona, Opposite to Hajj Camp , Uttara, Dhaka-1230",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "BRAC Institute Of Skills Development-Rupganj",
+                coords: [23.834024609577366, 90.55070422361217], 
+                address: "Kanchan, Rupganj, Naraynganj",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Compact Institute of Skills Development (CISD)",
+                coords: [23.596591077701362, 88.92487539349115], 
+                address: "Sarojgonj, Chuadanga",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "DIST Technical Training Center",
+                coords: [25.63204719079225, 88.62553954132528], 
+                address: "DIST Technical Training Center",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Dolphin Training Center",
+                coords: [23.94625028143355, 90.30635735288827], 
+                address: "Banglabazar, Narshinghopur, Asulia, Savar 1341",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Dolphin Training Center",
+                coords: [23.94625028143355, 90.30635735288827], 
+                address: "Banglabazar, Narshinghopur, Asulia, Savar 1341",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Mirpur Agricultural Workshop & Training School",
+                coords: [23.825464042033126, 90.36408503952578], 
+                address: "1/C-1/A, Pallabi, Mirpur-12, Dhaka-1216",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "PEW Training Center",
+                coords: [24.39405566239395, 88.61742212789967], 
+                address: "Choto Bongram (Baro Rastar More), Sopura-6203, Chandrima, Rajshahi",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Saic Institute of Management & Technology",
+                coords: [23.805986190754734, 90.37754882445581], 
+                address: "M/3, Mirpur-14, Dhaka",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Sunflower Technical Training Centre",
+                coords: [25.971132448751977, 89.6845396185185], 
+                address: "House No # 68, Road No # 27, Ward No # 05, Biddutpara, Nageshwari, Kurigram",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "Tool and Technology Institute (TTI), BITAC",
+                coords: [23.760860666967712, 90.40414536650997], 
+                address: "116 (kha), Tejgaon Industrial Area, Dhaka",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "UCEP Hafiz Mazumder Technical School",
+                coords: [24.936424537102468, 91.9828306800398], 
+                address: "Bateshwar, Khadimnagar, Jalalabad Cantonment, Sylhet Sadar, Sylhet",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "UCEP Mohsin Khulna Technical School",
+                coords: [22.842213018064342, 89.53987573727014], 
+                address: "7,Junction Road, Baikali,Boyra, Khulna",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "UCEP Rajshahi TVET Institute",
+                coords: [24.416470815759574, 88.61092953254912], 
+                address: "Airport Road, Santoshpur, Paba, Rajshahi, Bangladesh",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "UCEP Rangpur TVET Institute",
+                coords: [25.693106906986408, 89.26805217821497], 
+                address: "Taluk Dharmadash, Rangpur",
+               details: "BEIOA"
+            }
+            ,
+            {
+                name: "AB Bank PLC",
+                coords: [21.426003840435534, 91.97997917993588], 
+                address: "Hotel Allegro Suites,Plot-65,Block-A,Kalatoli Road,Cox's Bazar",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "AB Bank PLC",
+                coords: [22.705728269914545, 90.37042462535773], 
+                address: "Barishal",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Agrani Bank PLC",
+                coords: [22.823744974324214, 89.55243614853669], 
+                address: "BDBL Bhaban, 4th Floor, Shibbari, Khulna",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Agrani Bank PLC",
+                coords: [24.378656569618315, 88.59691779724069], 
+                address: "Rajshahi",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Al-Arafah Islami Bank",
+                coords: [23.46181366582463, 91.18311615219476], 
+                address: "A K Fazlul Haque Road, Cumilla",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Al-Arafah Islami Bank",
+                coords: [23.724192413734922, 90.42195389499922], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Bank Asia PLC",
+                coords: [22.364119539053203, 91.82211017583845], 
+                address: "Chittagong",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Bank Asia PLC",
+                coords: [24.9041252753093, 91.86942155959306], 
+                address: "Sylhet",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Bengal Commercial Bank",
+                coords: [23.728690649961905, 90.41651985301594], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Bengal Commercial Bank",
+                coords: [23.728690649961905, 90.41651985301594], 
+                address: "Sylhet",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Brac Bank PLC",
+                coords: [23.729279915997505, 90.4166378699514], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Brac Bank PLC",
+                coords: [24.453115562587, 89.70462601086632], 
+                address: "Sirajganj",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "City Bank PLC",
+                coords: [23.723705730948364, 90.41971737265601], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Dhaka Bank PLC",
+                coords: [23.73076661267001, 90.41731404780765], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Dutch Bangla Bank PLC",
+                coords: [23.730284254599663, 90.41576902981049], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Eastern Bank PLC",
+                coords: [23.780368160360336, 90.41531147008861], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "IDLC Finance PLC",
+                coords: [25.632462153319377, 88.63893228191192], 
+                address: "Dinajpur",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Islami Bank Bangladesh PLC",
+                coords: [23.728690649961905, 90.41651985301594], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Jamuna Bank PLC",
+                coords: [23.545948689926757, 89.1682821016732], 
+                address: "Jhinaidaha",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Jamuna Bank PLC",
+                coords: [24.36670739514994, 88.60493078439582], 
+                address: "Rajshahi",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Mercantile Bank PLC",
+                coords: [23.617172122805297, 90.50176487999872], 
+                address: "Narayanganj",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Mutual Trust Bank PLC",
+                coords: [25.75047587627169, 89.25414910435228], 
+                address: "Rangpur",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Mutual Trust Bank PLC",
+                coords: [23.163499626214833, 89.223077042207], 
+                address: "Jashore",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "NCC Bank PLC",
+                coords: [24.76357431408412, 90.40847420551161], 
+                address: "Mymensingh",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "NRBC Bank PLC",
+                coords: [23.0096323594032, 91.39939035299442], 
+                address: "Feni",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "One Bank PLC",
+                coords: [23.906641654647363, 89.13477983952828], 
+                address: "Kustia",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Prime Bank PLC",
+                coords: [23.728858426930323, 90.41584358178248], 
+                address: "Dhaka",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Pubali Bank PLC ",
+                coords: [24.896661562841526, 91.86142313058791], 
+                address: "Sylhet",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Pubali Bank PLC ",
+                coords: [24.896661562841526, 91.86142313058791], 
+                address: "Sylhet",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "Pubali Bank PLC ",
+                coords: [24.809431579624157, 88.94396414608718], 
+                address: "Naugaon",
+               details: "BBSME"
+            }
+            ,
+            {
+                name: "RAKUB Bank PLC",
+                coords: [24.406596376612278, 88.60585610658096], 
+                address: "Rajshahi",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Rupali Bank PLC",
+                coords: [23.726409705912367, 90.42034261807365], 
+                address: "15/17 Sadek Hossain Khoka Road, Motijheel Dhaka",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Shahjalal Islami Bank PLC",
+                coords: [23.79274560720005, 90.42423101365479], 
+                address: "Shahjalal Islami Bank Training Academy, Antique Tower (Level-3), 1040 Japanese School Road, Baridhara, Dhaka – 1212",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Sonali Bank PLC",
+                coords: [22.327539870694757, 91.81197297851342], 
+                address: "Sonali Bank Building, Badamtali, Agrabad, Chittagong",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Sonali Bank PLC",
+                coords: [24.84714816388795, 89.37767673314487], 
+                address: "Court House Street, Bogura Sadar, Bogura",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Southeast Bank PLC",
+                coords: [23.726972387765187, 90.41742025200102], 
+                address: "Dhaka",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Trust Bank PLC",
+                coords: [22.65266917417702, 92.17840706495566], 
+                address: "CIPD, Rangamati sadar, Rangamati",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "United Commercial Bank PLC",
+                coords: [24.853328146932906, 89.37300343585889], 
+                address: "Bogura Sadar, Bogura",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "United Commercial Bank PLC",
+                coords: [23.88056321090029, 90.00014880985061], 
+                address: "Koitta Noyadingi-Katigram Road, Saturia koitta-1800",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "4A Yarn Dyeing Ltd",
+                coords: [23.957667697397387, 90.26051322392257], 
+                address: "kachibari, Ashulia, Savar, Dhaka-1340",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Amity Design Ltd.",
+                coords: [23.82005152236264, 90.36611093582668], 
+                address: "House # 7 & 9, Road # 9, Block - D, Section # 11 Dhaka Mirpur",
+                details: "BBSME"
+            }
+            ,
+            {
+                name: "Bangladesh Apparel General Managers’ Association",
+                coords: [23.86381616942707, 90.394624435828], 
+                address: "ouse : 24, Sonargaon Janapath Road, Sector : 11, Uttara,Dhaka-1230",
+                details: "BBSME"
+            }
+            
+        ];
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap & CARTO',
+            subdomains: 'abcd',
+            maxZoom: 20
+        }).addTo(map);
+
+        // Loop through the institutes array and add a marker for each one
+        institutes.forEach(function(institute) {
+            var marker = L.marker(institute.coords).addTo(map);
+            
+            // Bind a popup with information about the institute
+            marker.bindPopup(`
+                <b>${institute.name}</b><br>
+                <b>Address:</b> ${institute.address}<br>
+                <b>PIU:</b> ${institute.details}
+            `);
+            // <b>Details:</b> ${institute.details}
+        });
+
+        // Optional: Add a click event to show a simple alert with coordinates (useful for debugging)
+        // map.on('click', function(e) {
+        //     alert("Lat, Lon: " + e.latlng.lat + ", " + e.latlng.lng);
+        // });
+
+    </script>
+</body>
+</html>
