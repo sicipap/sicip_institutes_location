@@ -3,36 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SICIP Training Institutes in Bangladesh</title>
+    <title>SICIP Training Institutes Map</title>
     <!-- Leaflet CSS for map styling -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <!-- Leaflet JavaScript for map functionality -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Set a fixed height for the map container */
         #map {
-            height: 600px;
-            width: 100%;
+        height: 600px;
+        width: 100%;
         }
-        body {
-            font-family: sans-serif;
-            margin: 20px;
-        }
-        .info-panel {
-            margin-top: 15px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-    </style>
+  </style>
 </head>
-<body>
-    <h1>Map of SICIP Training Institutes in Bangladesh</h1>
-    <p>Click on a marker for more details about the institute.</p>
+<body class="bg-gradient-to-br from-slate-100 via-blue-50 to-indigo-100 min-h-screen">
+    <div class="max-w-6xl mx-auto px-6 py-10">
+        <div class="row">
+            <div class="col-12">
+                <!-- Header Section -->
+                    <div class="row">
+                        <div class="col-md-12 col-12">
+                            <div class="text-center mb-8">
+                                <h1 class="text-4xl md:text-5xl font-extrabold text-gray-800 tracking-tight">
+                                    SICIP Training Institutes Map
+                                </h1>
+                                <p class="mt-3 text-lg text-gray-600">
+                                    Explore all institutes across Bangladesh. Click a marker to view details.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map Card -->
+                    <div class="
+                    bg-white/80 backdrop-blur-md
+                    rounded-2xl shadow-2xl
+                    border border-gray-200
+                    overflow-hidden
+                    transition hover:shadow-3xl
+                    ">
+                    <div class="p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold">
+                        Institute Locations
+                    </div>
+
+                    <div id="map"></div>
+                    </div>
+            </div>
+        </div>
+    </div>
     
-    <!-- Container for the map -->
-    <div id="map"></div>
+    
 
     <script>
         // Initialize the map
@@ -1131,7 +1151,370 @@
                 address: "Chanmari (behind mazar), Narayanganj",
                 details: "BKMEA"
             }
-            
+            ,
+            {
+                name: "Bandarban Technical Training Centre",
+                coords: [22.17307879021867, 92.18384631055373], 
+                address: "Meghla,Bandarban , chattogram, Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Bangladesh German Technical Training Center, Dhaka",
+                coords: [23.803015548197717, 90.35995717123953], 
+                address: "Mirpur-2, Dhaka-1216",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Bangladesh Institute of Marine Technology",
+                coords: [23.610164943723515, 90.50763592485286], 
+                address: "Sonakanda,Nabdar, Narayanganj.",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Bangladesh Korea Technical Training Centre Chittagong",
+                coords: [22.369779330413362, 91.81386186646903], 
+                address: "PO: Polytechnic Institute, PS: Khulshi, Nasirabad, Chittagong-4209",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Bangladesh Korea Technical Training Centre Dhaka",
+                coords: [23.780955969452258, 90.3527245837026], 
+                address: "Mirpur Road, Darus Salam, Dhaka-1216",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Barishal Technical Training Center",
+                coords: [22.704458706603457, 90.35382196065683], 
+                address: "529,C&B Road, Barishal",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Bhola Technical Training Centre",
+                coords: [22.685450598694192, 90.64360815395578], 
+                address: "Joynagor, Banglabazer,Bhola.",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Bogra Technical Training Centre",
+                coords: [24.85525328432206, 89.35673682606486], 
+                address: "Nishindara, Karbala, Bogra-5800",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Brahmanbaria Technical Training Centre",
+                coords: [23.894718473651274, 91.16004503158324], 
+                address: "Bhatshala,Brahmanbaria Sadar,Brahmanbaria",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Chapainawabganj Technical Training Centre",
+                coords: [24.603933308767942, 88.25334394139946], 
+                address: "Baroghoria, Chapainawabganj",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Chuadanga Technical Training Centre",
+                coords: [23.63615476880793, 88.81711138562102], 
+                address: "Darsona Road,Vimrulla, Chuadanga, Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Cumilla Technical Training Centre",
+                coords: [23.428223454527767, 91.13695037574726], 
+                address: "Kotbari, Cumilla , Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Dinajpur Technical Training Centre",
+                coords: [25.63411446175582, 88.66064432424068], 
+                address: "Dinajpur , Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Faridpur Technical Training Centre",
+                coords: [23.587606700496934, 89.81370368554626], 
+                address: "Faridpur, Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Feni Technical Training Centre",
+                coords: [23.009917640901815, 91.39990486191672], 
+                address: "Feni, Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Institute of Marine Technology, Bagerhat",
+                coords: [22.641773822792036, 89.8077426180529], 
+                address: "Institute of Marine Technology, Chitoli, Boitpur, Bagerhat",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Institute of Marine Technology, Chandpur",
+                coords: [22.641773822792036, 89.8077426180529], 
+                address: "Islampur Gachtola, Chandpur Sadar",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Institute of Marine Technology, Munshiganj",
+                coords: [23.51472388513137, 90.47066331622914], 
+                address: "Borolia, Tongibari, Munshiganj",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Institute of Marine Technology, Sirajganj",
+                coords: [24.395953596165306, 89.70585375118705], 
+                address: "Mulibari, Sayadabad, Sirajganj Sadar, Sirajganj",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Jamalpur Technical Training Centre",
+                coords: [24.875477048557205, 89.94698651017619], 
+                address: "Technical Training centre, Binondher para, Kachasora, sadar jamalpur.",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Jessore Technical Training Centre",
+                coords: [23.15842904997755, 89.2211777255429], 
+                address: "Nazir Shankarpur, Jessore",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Jhalakathi Technical Training Centre",
+                coords: [22.660739687226023, 90.19770028921783], 
+                address: "Bikna, Jhalakathi",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Jhenaidah  Technical Training Centre",
+                coords: [23.569920159465937, 89.17438827999729], 
+                address: "infornt of Jhenaidah Cadet College, Kushtia Road, Arappur,Jhenaidah",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Joypurhat Technical Training Centre",
+                coords: [25.091185523860403, 89.05537792182672], 
+                address: "Hanail,Joypurhat",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Khulna Technical Training Centre",
+                coords: [22.897614648454926, 89.49669119531993], 
+                address: "Teligati, PO: KUET, Khulna-9203",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Kishoreganj Technical Training Centre",
+                coords: [24.47196727341139, 90.768447838999], 
+                address: "Katabaria, Kishoreganj sadar , kishoreganj, Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Kurigram Technical Training Centre",
+                coords: [25.80196049184206, 89.63552695623403], 
+                address: "Krishnapur,Kurigram",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Kushtia Technical Training Centre",
+                coords: [23.890313457741506, 89.11580831014535], 
+                address: "Kushtia Technical Training Centre, Chourhas, BSCIC, Kushtia.",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Lakshmipur Technical Training Center",
+                coords: [22.96650444725666, 90.83774755854165], 
+                address: "Technical Training Center, Masimnagar, Khilbaicha, Laxmipur",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Manikganj Technical Training Center",
+                coords: [23.85267739052571, 89.9991193720612], 
+                address: "Technical Training Center, Manikganj",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Meherpur Technical Training Center",
+                coords: [23.782943180353488, 88.66148635671651], 
+                address: "Kushtia Road, Meherpur",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Meherpur Technical Training Center",
+                coords: [23.782943180353488, 88.66148635671651], 
+                address: "Kushtia Road, Meherpur",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Moulvibazar Technical Training Center",
+                coords: [24.482818597341378, 91.81464779297171], 
+                address: "Moulvibazar",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Mymensing Technical Training Center",
+                coords: [24.735070306965675, 90.40637207633442], 
+                address: "164, Maskanda, Mymensingh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Mymensing Technical Training Center",
+                coords: [24.735070306965675, 90.40637207633442], 
+                address: "164, Maskanda, Mymensingh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Naogaon Technical Training Center",
+                coords: [24.823458441177404, 88.93000513728923], 
+                address: "Bangabaria, Naogaon Sador-6500",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Narsingdi Technical Training Center",
+                coords: [23.980896460869246, 90.74231571809283], 
+                address: "Shaspur, Shibpur, Narsingdi.",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Natore Technical Training Center",
+                coords: [24.420592683093563, 89.00426202370956], 
+                address: "Basudevpur, Naldanga, Natore",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Netrakona Technical Training Center",
+                coords: [24.89747338562046, 90.74649727394335], 
+                address: "Rajur Bazar,Netrakona Sadar,Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Nilphamari Technical Training Center",
+                coords: [25.924311509142726, 88.83850844399142], 
+                address: "Kukhapara,Chetashah Ghunti, Nilphamari,Bangladesh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Noakhali Technical Training Center",
+                coords: [22.899728944748063, 91.10016340271784], 
+                address: "Noakhali Technical Trining Center, Gabua, Begumgonj, Noakhali",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Pabna Technical Training Center",
+                coords: [24.010735185981368, 89.27004752919055], 
+                address: "Rajapur, Pabna",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Panchagarh Tachnical Training Center",
+                coords: [26.333389547376825, 88.53730994700457], 
+                address: "Baganbari, Mirgarh-road, Panchagarh",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Patuakhali Tachnical Training Center",
+                coords: [22.363301364660856, 90.32963979660715], 
+                address: "987H+7J6, Patuakhali",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Rajshahi Tachnical Training Center",
+                coords: [24.386350434037578, 88.60109788402308], 
+                address: "9JR4+X73, Cantonment Rd, Rajshahi",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Rangpur Tachnical Training Center",
+                coords: [25.68107500374922, 89.27266384088743], 
+                address: "Taluk Dharmodas, Rangpur-5403",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Satkhira Tachnical Training Center",
+                coords: [22.75359959990076, 89.10571970695928], 
+                address: "Q434+98P, Satkhira",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Shariatpur Tachnical Training Center",
+                coords: [23.181292645089925, 90.36600704690434], 
+                address: "59J8+C76, Shariatpur",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Sherpur Tachnical Training Center",
+                coords: [24.97983870023977, 90.15649355005152], 
+                address: "X4GX+HQJ, Sherpur",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Sylhet Tachnical Training Center",
+                coords: [24.89186240505897, 91.88929157403258], 
+                address: "Sylhet",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Tangail Tachnical Training Center",
+                coords: [24.246206720307573, 89.93572618186747], 
+                address: "Tangail",
+                details: "BMET"
+            }
+            ,
+            {
+                name: "Thakurgaon Tachnical Training Center",
+                coords: [26.036477857765465, 88.48620314884397], 
+                address: "Thakurgaon",
+                details: "BMET"
+            }
         ];
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png', {
